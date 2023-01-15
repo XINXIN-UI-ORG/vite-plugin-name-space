@@ -20,6 +20,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "parse5": "^7.1.2",
     "vue": "^3.2.45"
   },
   "devDependencies": {
