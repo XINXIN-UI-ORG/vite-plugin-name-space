@@ -1,11 +1,14 @@
 import type { PluginOption } from 'vite';
 import { transfer2Node, transfer2String } from './transfer';
+import { walk } from './walk';
+import { generateClassName } from './generateClassName';
 
-export default function NameSpacePlugin(): PluginOption {
+export default function NameSpacePlugin(config: { [propName: string]: string }): PluginOption {
   return {
     name: 'vite-plugin-name-space',
     enforce: 'pre',
     transform(code, id) {
+      console.log("88****&*&*&*&", config, "(((((()))))))");
       if (!/\.vue/.test(id)) {
         return code;
       }
@@ -19,6 +22,9 @@ export default function NameSpacePlugin(): PluginOption {
 
       // 转换html内容
       const astNode = transfer2Node(result[1]);
+      walk(null, astNode, (parentNode, node) => {
+        // console.log(node);
+      });
       return code.replace(matchTemplate, `<template>${transfer2String(astNode)}</template>`);
     },
     
@@ -26,17 +32,18 @@ export default function NameSpacePlugin(): PluginOption {
 }
 
 
-// const text = `
-// <div name-space="upload" class="testtt">
-// {{ msg }}
-// </div>
-// `;
+const text = `
+<div name-base="upload" class="testtt">
+  <div name-space="default">
+    <div>
+      <span name-space="icon">
+        text
+      </span>
+    </div>
+  </div>
+</div>
+`;
 
-// const dom = Parser.parse(text) as any;
-// console.log(dom);
-
-// console.log(dom.childNodes[0].childNodes[1].childNodes[0].attrs);
-// dom.childNodes[0].childNodes[1].childNodes[0].attrs[1].value = '1234565fdbhfsdbj';
-
-// const str = serialize((<any>dom).childNodes[0].childNodes[1]);
-// console.log(str);
+const astNode = transfer2Node(text);
+walk(null, astNode, generateClassName);
+console.log(transfer2String(astNode));

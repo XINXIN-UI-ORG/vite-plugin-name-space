@@ -4,5 +4,5 @@ import nameSpace from 'vite-plugin-name-space';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), nameSpace()],
+  plugins: [vue(), nameSpace({ prefix: 'x' })],
 });
