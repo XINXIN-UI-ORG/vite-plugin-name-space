@@ -1,0 +1,32 @@
+{
+  "name": "vite-plugin-name-space",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/vite-plugin-name-space.umd.cjs",
+  "module": "./dist/vite-plugin-name-space.js",
+  "exports": {
+    ".": {
+      "import": "./dist/vite-plugin-name-space.js",
+      "require": "./dist/vite-plugin-name-space.umd.cjs"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.2.45"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "@vitejs/plugin-vue": "^4.0.0",
+    "typescript": "^4.9.3",
+    "vite": "^4.0.0",
+    "vue-tsc": "^1.0.11"
+  }
+}
