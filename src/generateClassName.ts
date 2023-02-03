@@ -1,9 +1,9 @@
-const BODY_TAG = 'body';
-const NAME_BASE_ATTR = 'name-base';
-const NAME_SPACE_ATTR = 'name-space';
-const CLASS_ATTR = 'class';
+import { TagHandler, BaseTag, SpaceTag, AttrsType, IsTag } from './tag';
 
-type AttrsType = { name: string, value: string };
+const BODY_TAG = 'body';
+const NAME_BASE_ATTR = 'x-base';
+const NAME_SPACE_ATTR = 'x-space';
+const NAME_IS_ATTR = 'x-is';
 
 export function generateClassName(parentNode: any, node: any) {
   if (node.tagName === BODY_TAG || !parentNode) {
@@ -21,49 +21,13 @@ export function generateClassName(parentNode: any, node: any) {
     return;
   }
 
-  if (attrsMap.has(NAME_BASE_ATTR)) {
-    const nameClass = `x-${attrsMap.get(NAME_BASE_ATTR)}`;
-    addClass(attrsMap, nameClass, attrs);
-    
-    // 保存当前基础类名
-    node.baseClass = nameClass;
-    removeAttr(attrs, NAME_BASE_ATTR);
+  // 设置调用链
+  const baseHandler: TagHandler = new BaseTag(NAME_BASE_ATTR);
+  const spaceHandler: TagHandler = new SpaceTag(NAME_SPACE_ATTR);
+  const isHandler: TagHandler = new IsTag(NAME_IS_ATTR);
+  baseHandler.setNextChain(spaceHandler);
+  spaceHandler.setNextChain(isHandler);
 
-  }
-
-  if (attrsMap.has(NAME_SPACE_ATTR)) {
-    const lastLevelClass = parentNode.baseClass;
-    if (!lastLevelClass) {
-      return;
-    }
-
-    const baseClass = `${lastLevelClass}__${attrsMap.get(NAME_SPACE_ATTR)}`;
-    addClass(attrsMap, baseClass, attrs);
-    node.baseClass = baseClass;
-    removeAttr(attrs, NAME_SPACE_ATTR);
-  }
-}
-
-function addClass(attrsMap: Map<string, string>, nameClass: string, attrs: AttrsType[]) {
-  const curClass = attrsMap.get(CLASS_ATTR);
-  attrsMap.set(CLASS_ATTR, curClass ? `${curClass} ${nameClass}` : nameClass);
-  modifyAttrs(attrs, CLASS_ATTR, attrsMap.get(CLASS_ATTR)!);
-}
-
-function modifyAttrs(attrs: AttrsType[], key: string, value: string) {
-  const attr = attrs.find(attr => attr.name === key);
-  if (!attr) {
-    attrs.push({
-      name: key,
-      value,
-    });
-    return;
-  }
-
-  attr.value = value;
-}
-
-function removeAttr(attrs: AttrsType[], key: string) {
-  const index = attrs.findIndex(item => item.name === key);
-  attrs.splice(index, 1);
+  // 处理标签内容
+  baseHandler.handler(attrsMap, attrs, node, parentNode);
 }

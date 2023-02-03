@@ -33,10 +33,13 @@ export default function NameSpacePlugin(config: { [propName: string]: string }):
 
 
 const text = `
-<div name-base="upload" class="testtt">
-  <div name-space="default">
+<div x-base="upload" class="testtt" x-is="{
+  drag: drag,
+  test: test,
+}">
+  <div x-space="default">
     <div>
-      <span name-space="icon">
+      <span x-space="icon">
         text
       </span>
     </div>
