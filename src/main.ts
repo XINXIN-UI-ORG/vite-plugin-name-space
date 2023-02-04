@@ -36,7 +36,7 @@ const text = `
 <div x-base="upload" :class="[testtt, hhh ? 'yellow' : 'blue']" x-is="{
   drag: isDrag,
   test: isTest,
-}">
+}" x-bm="[listType, listType1]">
   <div x-space="default" :class="{
     red: isRed,
     blue: true,
@@ -45,7 +45,7 @@ const text = `
       drag: isDrag,
       test: isTest,
     }">
-      <span x-space="icon" class="hhhhhggg">
+      <span x-space="icon" class="hhhhhggg" x-bm="listType">
         text
       </span>
     </div>

@@ -3,10 +3,7 @@ import { TagHandler, AttrsType } from "./AbstractTag";
 export class IsTag extends TagHandler {
   
   public handlerTag(attrsMap: Map<string, string>, attrs: AttrsType[], node: any, parentNode: any): void {
-    const isAttrs = attrsMap.get(this.tagName)?.trim();
-    if (!isAttrs) {
-      return;
-    }
+    const isAttrs = attrsMap.get(this.tagName)!.trim();
 
     // 根据is生成class
     const pureIsAttrs = isAttrs.slice(1, isAttrs.length - 1);

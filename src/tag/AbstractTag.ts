@@ -37,7 +37,8 @@ export abstract class TagHandler {
    */
   public handler(attrsMap: Map<string, string>, attrs: AttrsType[], node: any, parentNode: any) {
     // 当前元素不存在该标签则跳过当前链的处理
-    if (attrsMap.has(this.tagName)) {
+    const tag = attrsMap.get(this.tagName);
+    if (tag?.trim()) {
       this.handlerTag(attrsMap, attrs, node, parentNode);
     }
 
