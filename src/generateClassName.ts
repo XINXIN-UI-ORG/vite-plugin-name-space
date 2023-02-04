@@ -18,7 +18,6 @@ export function generateClassName(parentNode: any, node: any) {
 
   if (!attrsMap.has(NAME_BASE_ATTR) && !attrsMap.has(NAME_SPACE_ATTR)) {
     node.baseClass = parentNode.baseClass;
-    return;
   }
 
   // 设置调用链

@@ -44,7 +44,7 @@ export abstract class TagHandler {
     this.nextHandler?.handler(attrsMap, attrs, node, parentNode);
   }
 
-  protected addClass(attrsMap: Map<string, string>, nameClass: string, attrs: AttrsType[]) {
+  protected addClass(attrsMap: Map<string, string>, nameClass: string, attrs: AttrsType[], stringfy: boolean = true) {
     // 将class转换成数组模式
     let classList: string[] = [];
     if (attrsMap.has(BIND_CLASS_ATTR)) {
@@ -62,7 +62,7 @@ export abstract class TagHandler {
       }
     }
     
-    classList.push(`'${nameClass}'`);
+    classList.push(stringfy ? `'${nameClass}'` : nameClass);
     const stringfyClass = classList.reduce((total, current) => {
       return `${total}, ${current}`;
     });
