@@ -1,6 +1,7 @@
 export type AttrsType = { name: string, value: string };
 
 const CLASS_ATTR = 'class';
+const BIND_CLASS_ATTR = ':class';
 
 export abstract class TagHandler {
   protected nextHandler: TagHandler | null;
@@ -44,9 +45,51 @@ export abstract class TagHandler {
   }
 
   protected addClass(attrsMap: Map<string, string>, nameClass: string, attrs: AttrsType[]) {
-    const curClass = attrsMap.get(CLASS_ATTR);
-    attrsMap.set(CLASS_ATTR, curClass ? `${curClass} ${nameClass}` : nameClass);
-    this.modifyAttrs(attrs, CLASS_ATTR, attrsMap.get(CLASS_ATTR)!);
+    // 将class转换成数组模式
+    let classList: string[] = [];
+    if (attrsMap.has(BIND_CLASS_ATTR)) {
+      const bindClass = attrsMap.get(BIND_CLASS_ATTR)?.trim();
+      try {
+        classList = this.matchBindClass(bindClass || '')!;
+      } catch (_) {
+        // 不是数组或对象类型
+        classList.push(bindClass || '');
+      }
+    } else {
+      const curClass = attrsMap.get(CLASS_ATTR)?.trim();
+      if (curClass) {
+        classList = curClass.split(' ').map(item => `'${item}'`);
+      }
+    }
+    
+    classList.push(`'${nameClass}'`);
+    const stringfyClass = classList.reduce((total, current) => {
+      return `${total}, ${current}`;
+    });
+    attrsMap.set(BIND_CLASS_ATTR, `[${stringfyClass}]`);
+    this.modifyAttrs(attrs, BIND_CLASS_ATTR, attrsMap.get(BIND_CLASS_ATTR)!);
+    
+    // 清除原始的class
+    attrsMap.delete(CLASS_ATTR);
+    this.removeAttr(attrs, CLASS_ATTR);
+  }
+
+  private matchBindClass(bindClass: string) {
+    const originClass = bindClass.replaceAll("\n", '');
+    if (originClass.startsWith('[')) {
+      const pureClass = originClass.slice(1, originClass.length - 1);
+
+      return pureClass.split(',').filter(item => item.trim());
+    } else if (originClass.startsWith('{')) {
+      const pureClass = originClass.slice(1, originClass.length - 1);
+      
+      return pureClass.split(',').filter(item => item.trim()).map(item => {
+        const [key, value] = item.split(':');
+        return `${value.trim()} ? ${key.trim()} : ''`;
+      });
+    } else {
+      throw new Error('not iterable element');
+    }
   }
   
   protected modifyAttrs(attrs: AttrsType[], key: string, value: string) {
@@ -64,6 +107,8 @@ export abstract class TagHandler {
   
   protected removeAttr(attrs: AttrsType[], key: string) {
     const index = attrs.findIndex(item => item.name === key);
-    attrs.splice(index, 1);
+    if (index !== -1) {
+      attrs.splice(index, 1);
+    }
   }
 }

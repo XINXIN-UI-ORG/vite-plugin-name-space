@@ -33,13 +33,16 @@ export default function NameSpacePlugin(config: { [propName: string]: string }):
 
 
 const text = `
-<div x-base="upload" class="testtt" x-is="{
+<div x-base="upload" :class="[testtt, hhh ? 'yellow' : 'blue']" x-is="{
   drag: drag,
   test: test,
 }">
-  <div x-space="default">
+  <div x-space="default" :class="{
+    red: isRed,
+    blue: true,
+  }">
     <div>
-      <span x-space="icon">
+      <span x-space="icon" class="hhhhhggg">
         text
       </span>
     </div>
