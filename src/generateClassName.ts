@@ -3,8 +3,8 @@ import { TagHandler, BaseTag, SpaceTag, AttrsType, IsTag, BmTag } from './tag';
 const BODY_TAG = 'body';
 const NAME_BASE_ATTR = 'x-base';
 const NAME_SPACE_ATTR = 'x-space';
-const NAME_IS_ATTR = 'x-is';
-const NAME_BM_ATTR = 'x-bm';
+const NAME_IS_ATTR = ':x-is';
+const NAME_BM_ATTR = ':x-bm';
 
 export function generateClassName(parentNode: any, node: any) {
   if (node.tagName === BODY_TAG || !parentNode) {

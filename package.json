@@ -1,6 +1,5 @@
 {
   "name": "vite-plugin-name-space",
-  "private": true,
   "version": "1.0.0",
   "type": "module",
   "files": [
@@ -14,6 +13,13 @@
       "require": "./dist/vite-plugin-name-space.umd.cjs"
     }
   },
+  "keywords": [
+    "vue3",
+    "vite",
+    "name generator"
+  ],
+  "author": "Eric Jin",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",

@@ -8,7 +8,6 @@ export default function NameSpacePlugin(config: { [propName: string]: string }):
     name: 'vite-plugin-name-space',
     enforce: 'pre',
     transform(code, id) {
-      console.log("88****&*&*&*&", config, "(((((()))))))");
       if (!/\.vue/.test(id)) {
         return code;
       }
@@ -22,9 +21,7 @@ export default function NameSpacePlugin(config: { [propName: string]: string }):
 
       // 转换html内容
       const astNode = transfer2Node(result[1]);
-      walk(null, astNode, (parentNode, node) => {
-        // console.log(node);
-      });
+      walk(null, astNode, generateClassName);
       return code.replace(matchTemplate, `<template>${transfer2String(astNode)}</template>`);
     },
     
@@ -32,27 +29,27 @@ export default function NameSpacePlugin(config: { [propName: string]: string }):
 }
 
 
-const text = `
-<div x-base="upload" :class="[testtt, hhh ? 'yellow' : 'blue']" x-is="{
-  drag: isDrag,
-  test: isTest,
-}" x-bm="[listType, listType1]">
-  <div x-space="default" :class="{
-    red: isRed,
-    blue: true,
-  }">
-    <div x-is="{
-      drag: isDrag,
-      test: isTest,
-    }">
-      <span x-space="icon" class="hhhhhggg" x-bm="listType">
-        text
-      </span>
-    </div>
-  </div>
-</div>
-`;
+// const text = `
+// <div x-base="upload" :class="[testtt, hhh ? 'yellow' : 'blue']" x-is="{
+//   drag: isDrag,
+//   test: isTest,
+// }" x-bm="[listType, listType1]">
+//   <div x-space="default" :class="{
+//     red: isRed,
+//     blue: true,
+//   }">
+//     <div x-is="{
+//       drag: isDrag,
+//       test: isTest,
+//     }">
+//       <span x-space="icon" class="hhhhhggg" x-bm="listType">
+//         text
+//       </span>
+//     </div>
+//   </div>
+// </div>
+// `;
 
-const astNode = transfer2Node(text);
-walk(null, astNode, generateClassName);
-console.log(transfer2String(astNode));
+// const astNode = transfer2Node(text);
+// walk(null, astNode, generateClassName);
+// console.log(transfer2String(astNode));

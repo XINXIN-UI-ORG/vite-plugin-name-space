@@ -9,7 +9,7 @@ export class IsTag extends TagHandler {
     const pureIsAttrs = isAttrs.slice(1, isAttrs.length - 1);
     const classList = pureIsAttrs.split(',').filter(item => item.trim()).map(item => {
       const [key, value] = item.split(":");
-      return `${node.baseClass}-${value.trim()} ? ${key.trim()} : ''`;
+      return `${value.trim()} ? '${node.baseClass}-${key.trim()}' : ''`;
     });
 
     classList.forEach(name => {
