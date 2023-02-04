@@ -5,5 +5,5 @@ export function transfer2Node(source: string): any {
 }
 
 export function transfer2String(node: any): string {
-  return serialize(node);
+  return serialize(node).replace(/=""/g, '').replace(/&amp;/g, '&');
 }

@@ -22,6 +22,10 @@ export default function NameSpacePlugin(config: { [propName: string]: string }):
       // 转换html内容
       const astNode = transfer2Node(result[1]);
       walk(null, astNode, generateClassName);
+      if (id === 'D:/github/xinxin-ui/site/src/components/examples/input/Index.vue') {
+        console.log(code.replace(matchTemplate, `<template>${transfer2String(astNode)}</template>`));
+        console.log("===============================================================");
+      }
       return code.replace(matchTemplate, `<template>${transfer2String(astNode)}</template>`);
     },
     
