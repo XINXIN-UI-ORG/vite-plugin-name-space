@@ -65,9 +65,9 @@ export abstract class TagHandler {
     
     classList.push(stringfy ? `'${nameClass}'` : nameClass);
     const stringfyClass = classList.reduce((total, current) => {
-      return `${total}, ${current}`;
+      return `${total}, \n${current.trim()}`;
     });
-    attrsMap.set(BIND_CLASS_ATTR, `[${stringfyClass}]`);
+    attrsMap.set(BIND_CLASS_ATTR, `[\n${stringfyClass}\n]`);
     this.modifyAttrs(attrs, BIND_CLASS_ATTR, attrsMap.get(BIND_CLASS_ATTR)!);
     
     // 清除原始的class
